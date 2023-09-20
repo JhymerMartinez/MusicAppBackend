@@ -1,7 +1,11 @@
 const axios = require('axios');
+const cors = require('cors');
 const app = require('./app');
 
 const port = process.env.PORT || 8000;
+
+app.use(cors());
+
 app.get('/api/*', (req, res) => {
   const url = req.url.replace(/^\/api/, '');
   axios({
