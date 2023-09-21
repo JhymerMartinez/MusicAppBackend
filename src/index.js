@@ -1,12 +1,14 @@
 const axios = require('axios');
 const cors = require('cors');
 const app = require('./app');
+const logger = require('./logger');
 
 const port = process.env.PORT || 8000;
 
 app.use(cors());
 
 app.get('/api/*', (req, res) => {
+  logger.info(`Received a ${req.method} request for ${req.url}`);
   const url = req.url.replace(/^\/api/, '');
   axios({
     method: req.method,
@@ -14,16 +16,17 @@ app.get('/api/*', (req, res) => {
   })
     .then(({ data }) => {
       if (data.error) {
+        logger.error(`Error from Deezer API: ${data.error}`);
         return res.status(400).json(data.error);
       }
       res.json(data);
     })
     .catch((err) => {
+      logger.error(`Error: ${err}`);
       res.status(err.status).send(err);
     });
 });
 
 app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server is running on port ${port}`);
+  logger.info(`Server is running on port ${port}!`);
 });
