@@ -12,7 +12,7 @@ app.get('/api/*', (req, res) => {
   const url = req.url.replace(/^\/api/, '');
   axios({
     method: req.method,
-    url: `https://api.deezer.com${url}`,
+    url: `https://api.deezercdcd.com${url}`,
   })
     .then(({ data }) => {
       if (data.error) {
@@ -22,8 +22,8 @@ app.get('/api/*', (req, res) => {
       res.json(data);
     })
     .catch((err) => {
-      logger.error(`Error: ${err}`);
-      res.status(err.status).send(err);
+      logger.error(err);
+      return res.status(err.status || 500).send(err);
     });
 });
 
