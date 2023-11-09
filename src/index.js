@@ -12,7 +12,7 @@ app.get('/api/*', (req, res) => {
   const url = req.url.replace(/^\/api/, '');
   axios({
     method: req.method,
-    url: `https://api.deezercdcd.com${url}`,
+    url: `https://api.deezer.com${url}`,
   })
     .then(({ data }) => {
       if (data.error) {
